@@ -2,6 +2,7 @@
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace Digital_Photobook.code
 {
@@ -31,7 +32,7 @@ namespace Digital_Photobook.code
             Directory.CreateDirectory(currentSubFolder);
         }
 
-        static public void CopyFile(int index, string oldPath)
+        static public string CopyFile(int index, string oldPath)
         {
             string newFilePath = Path.Combine(currentSubFolder, index.ToString() + ".jpg");
 
@@ -40,6 +41,13 @@ namespace Digital_Photobook.code
 
             //Bild als JPEG abspeichern
             image.Save(newFilePath, ImageFormat.Jpeg);
+
+            return newFilePath;
+        }
+
+        static public int GetFileCount()
+        {
+            return Directory.EnumerateFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Digital Photobook"), "*.jpg", SearchOption.AllDirectories).Count();
         }
     }
 }

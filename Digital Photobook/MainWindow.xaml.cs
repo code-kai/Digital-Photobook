@@ -104,9 +104,13 @@ namespace Digitales_Fotobuch
         {
             //Es muessen die XML-Datei ausgelesen werden (bzw. erstellt wenn nicht vorhanden)
             xmlHandling.ReadXmlTags();
+            xmlHandling.ReadXmlPicturesTags();
 
             //Die ausgelesenen Tags werden erstellt
             wrapPanelTags = TagControlHandling.PlaceTagsOnWrapPanel(wrapPanelTags, xmlHandling.GetAllReadedTags());
+
+            //Maximale Anzahl an Bildern setzen
+            labelPicMax.Content = FileHandling.GetFileCount().ToString();
         }
 
         private void ButtonAddTagClick(object sender, RoutedEventArgs e)
@@ -121,7 +125,7 @@ namespace Digitales_Fotobuch
         private void TraverseThroughPictures(Direction direction)
         {
             //Nur ausfuehren wenn mindestens ein Filter aktiv ist
-            if (TagControlHandling.IsAFilterActive(wrapPanelTags.Children) == true)
+            if (TagControlHandling.IsAFilterActive(wrapPanelTags.Children) == true || newPictureMode == true)
             {
                 //Funktion beenden wenn man bereits am rechten Rand ist
                 if ((direction == Direction.Right) &&
@@ -154,7 +158,7 @@ namespace Digitales_Fotobuch
             }
         }
 
-        private void EditNextPicture()
+        private bool EditNextPicture()
         {
             //Nur ausfuehren wenn mindestens ein Filter aktiv ist
             if (TagControlHandling.IsAFilterActive(wrapPanelTags.Children) == true)
@@ -162,23 +166,39 @@ namespace Digitales_Fotobuch
                 //Funktion beenden wenn man bereits am rechten Rand ist
                 if (currentPicIndex >= pictureList.Count)
                 {
-                    return;
+                    return false;
                 }
 
-                FileHandling.CopyFile(currentPicIndex, pictureList[currentPicIndex - 1]);
+                //Kopiere die Datei um
+                string newFilePath = FileHandling.CopyFile(currentPicIndex, pictureList[currentPicIndex - 1]);
 
+                //Lege ein XML-Eintrag fuer diese Datei an
+                xmlHandling.InsertNewPictureWithTags(newFilePath, TagControlHandling.GetAllActiveTags(wrapPanelTags.Children));
+
+                //Alle Filter zuruecksetzen
                 wrapPanelTags = TagControlHandling.ResetActiveFilter(wrapPanelTags);
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
         private void ButtonPicRiClick(object sender, RoutedEventArgs e)
         {
+            bool editWorked = true;
+
             if (newPictureMode == true)
             {
-                EditNextPicture();
+                editWorked = EditNextPicture();
             }
 
-            TraverseThroughPictures(Direction.Right);
+            if ((newPictureMode == false) ||
+                (newPictureMode == true && editWorked == true))
+            {
+                TraverseThroughPictures(Direction.Right);
+            }
         }
         private void ButtonPicLeClick(object sender, RoutedEventArgs e)
         {
@@ -245,6 +265,9 @@ namespace Digitales_Fotobuch
 
                 //Bild aus Control loeschen
                 imageCurrentPic.Source = new BitmapImage();
+
+                //Maximale Anzahl an Bildern setzen
+                labelPicMax.Content = FileHandling.GetFileCount().ToString();
             }
         }
 

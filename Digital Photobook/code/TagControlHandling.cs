@@ -54,5 +54,20 @@ namespace Digitales_Fotobuch.code
 
             return wrapPanel;
         }
+
+        static public List<Tag> GetAllActiveTags(UIElementCollection children)
+        {
+            List<Tag> tagList = new List<Tag>();
+
+            foreach (TagControl child in children)
+            {
+                if (child.GetCurrentTagInfo().IsActive() == true)
+                {
+                    tagList.Add(child.GetCurrentTagInfo());
+                }
+            }
+
+            return tagList;
+        }
     } 
 }

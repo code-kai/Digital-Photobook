@@ -3,17 +3,18 @@ using System.Reflection;
 using System.Xml.Linq;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace Digitales_Fotobuch.code
 {
     public class XmlHandling
     {
         private XDocument docTags         = new XDocument();
-        private XDocument docPictures     = new XDocument();
         private XDocument docPicturesTags = new XDocument();
 
         #region Oeffentliche Funktionen
 
+        #region Oeffentliche Funktionen Tag
         public XDocument GetAllReadedTags()
         {
             return docTags;
@@ -44,52 +45,9 @@ namespace Digitales_Fotobuch.code
                 docTags = ReadXmlFile(xmlFileTagsPath);
             }
         }
-        public void ReadXmlPictures()
-        {
-            /* Ermittle den Pfad der XML-Datei fuer Pictures */
-            string xmlFilePicsPath = GetXmlFilePath("Pictures");
-
-            /* Wenn kein XML-File fuer Pictures vorhanden ist -> erstelle eins */
-            if (File.Exists(xmlFilePicsPath) == false)
-            {
-                //Erstelle Pictures
-                CreateXmlFile("Pictures");
-
-                //Lese Pictures
-                docPictures = ReadXmlFile(xmlFilePicsPath);
-            }
-            else
-            {
-                //Ansonsten nur Lesen
-                docPictures = ReadXmlFile(xmlFilePicsPath);
-            }
-        }
-        public void ReadXmlPicturesTags()
-        {
-            /* Ermittle den Pfad der XML-Datei fuer Zwischentabelle */
-            string xmlFilePicsTagsPath = GetXmlFilePath("PicturesTags");
-
-            /* Wenn kein XML-File fuer Zwischentabelle vorhanden ist -> erstelle eins */
-            if (File.Exists(xmlFilePicsTagsPath) == false)
-            {
-                //Erstelle Zwischentabelle
-                CreateXmlFile("PicturesTags");
-
-                //Lese Zwischentabelle
-                docPicturesTags = ReadXmlFile(xmlFilePicsTagsPath);
-            }
-            else
-            {
-                //Ansonsten nur Lesen
-                docPicturesTags = ReadXmlFile(xmlFilePicsTagsPath);
-            }
-        }
-
+        
         public void InsertNewTag(string tagName)
         {
-            /* Ermittle den Pfad der XML-Datei fuer Tags */
-            string xmlFileTagsPath = GetXmlFilePath("Tags");
-
             //Neues Tag-Element erstellen
             XElement tag = new XElement("Tag");
 
@@ -100,7 +58,7 @@ namespace Digitales_Fotobuch.code
             docTags.Element("root").Add(tag);
 
             //XML-Datei speichern
-            docTags.Save(xmlFileTagsPath);
+            docTags.Save(GetXmlFilePath("Tags"));
         }
 
         public void ChangeTag(string oldTagName, string newTagName)
@@ -127,7 +85,61 @@ namespace Digitales_Fotobuch.code
             docTags.Save(GetXmlFilePath("Tags"));
         }
         #endregion
+
+        #region Oeffentliche Funktionen PicturesTags
+        public void ReadXmlPicturesTags()
+        {
+            /* Ermittle den Pfad der XML-Datei fuer Zwischentabelle */
+            string xmlFilePicsTagsPath = GetXmlFilePath("PicturesTags");
+
+            /* Wenn kein XML-File fuer Zwischentabelle vorhanden ist -> erstelle eins */
+            if (File.Exists(xmlFilePicsTagsPath) == false)
+            {
+                //Erstelle Zwischentabelle
+                CreateXmlFile("PicturesTags");
+
+                //Lese Zwischentabelle
+                docPicturesTags = ReadXmlFile(xmlFilePicsTagsPath);
+            }
+            else
+            {
+                //Ansonsten nur Lesen
+                docPicturesTags = ReadXmlFile(xmlFilePicsTagsPath);
+            }
+        }
         
+        public void InsertNewPictureWithTags(string path, List<Tag> tagList)
+        {
+            //Neues Tag-Element erstellen
+            XElement picture = new XElement("Picture");
+
+            //Attribut hinzufuegen
+            picture.Add(new XAttribute("path", path));
+
+            //Alle Tags dem Picture hinzufuegen
+            foreach(Tag tag in tagList)
+            {
+                //Neues Tag-Element erstellen
+                XElement element = new XElement("Tag");
+
+                //Dem Tag-Element den Namen als Attribut hinzufuegen
+                element.Add(new XAttribute("name", tag.GetName()));
+
+                //Dem Bild das neue Tag element hinzufugen
+                picture.Add(element);
+            }
+
+            //Haenge ein neues Element im Root an
+            docPicturesTags.Element("root").Add(picture);
+
+            //XML-Datei speichern
+            docPicturesTags.Save(GetXmlFilePath("PicturesTags"));
+        }
+
+        #endregion
+
+        #endregion
+
         #region Private Funktionen
         private XDocument ReadXmlFile(string xmlPath)
         {
