@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Digitales_Fotobuch.controls.TagControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" KeyDown="UserControlKeyDown">
+    <Grid x:Name="tagConGrid" Cursor="Hand" PreviewMouseLeftButtonUp="TagConGridPreviewMouseLeftButtonUp" Height="50" Width="120" Margin="10,5,0,0">
+        <Ellipse x:Name="tagConEllipse" Fill="DarkGray" Width="120"/>
+        <TextBox x:Name="tagConTextBox" HorizontalAlignment="Left" Margin="15,0,0,0" TextWrapping="NoWrap" VerticalAlignment="Center" Width="Auto" BorderThickness="0,0,0,0" Background="DarkGray" FontWeight="Bold" FontSize="14" TextChanged="TagConTextBoxTextChanged" LostFocus="TagConTextBoxLostFocus"/>
+        <Button x:Name="tagConButton" Foreground="DarkGray" Content="X" HorizontalAlignment="Right" VerticalAlignment="Center" Background="LightGray" Height="25" Width="35" FontSize="22" FontWeight="Bold" FontFamily="Arial Rounded MT Bold" FontStyle="Normal" BorderBrush="{x:Null}" Focusable="False" Click="TagConButtonClick">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+
+        </Button>
+    </Grid>
+
+</UserControl>
