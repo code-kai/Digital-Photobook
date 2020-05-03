@@ -1,19 +1,22 @@
 ﻿using System;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Digital_Photobook.code
 {
     static public class FileHandling
     {
         private static string currentSubFolder;
-        static public string CreateNewPictureFolder()
+
+        static public void CreateNewPictureFolder()
         {
             DateTime dateTime = DateTime.Now;
             string folderName = dateTime.Year.ToString() + "_" + dateTime.Month.ToString() + "_" + dateTime.Day.ToString() + "_" +
                                 dateTime.Hour.ToString() + "_" + dateTime.Minute.ToString() + "_" + dateTime.Second;
 
             //Hauptordner
-            string pictureMainFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Digitales Fotobuch");
+            string pictureMainFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Digital Photobook");
 
             //Besteht der Hauptordner noch nicht?
             if (Directory.Exists(pictureMainFolder) == false)
@@ -26,20 +29,17 @@ namespace Digital_Photobook.code
 
             //Neuen Unterordner erstellen
             Directory.CreateDirectory(currentSubFolder);
-
-            return currentSubFolder;
         }
 
-        static void CopyFile(int index, string oldPath)
+        static public void CopyFile(int index, string oldPath)
         {
             string newFilePath = Path.Combine(currentSubFolder, index.ToString() + ".jpg");
 
+            //Bild laden
+            Image image = Image.FromFile(oldPath);
 
-            string ext = Path.GetExtension(oldPath).ToLower();
-
-            if (ext == ".png")
-            {
-            }
+            //Bild als JPEG abspeichern
+            image.Save(newFilePath, ImageFormat.Jpeg);
         }
     }
 }

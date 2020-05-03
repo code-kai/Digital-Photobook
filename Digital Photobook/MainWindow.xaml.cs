@@ -32,8 +32,6 @@ namespace Digitales_Fotobuch
         private int currentPicIndex = 0;
         private bool newPictureMode = false;
 
-        private string currentFolder = "";
-
         public MainWindow()
         {
             InitializeComponent();
@@ -163,10 +161,11 @@ namespace Digitales_Fotobuch
             {
                 //Funktion beenden wenn man bereits am rechten Rand ist
                 if (currentPicIndex >= pictureList.Count)
-
                 {
                     return;
                 }
+
+                FileHandling.CopyFile(currentPicIndex, pictureList[currentPicIndex - 1]);
 
                 wrapPanelTags = TagControlHandling.ResetActiveFilter(wrapPanelTags);
             }
@@ -174,12 +173,12 @@ namespace Digitales_Fotobuch
 
         private void ButtonPicRiClick(object sender, RoutedEventArgs e)
         {
-            TraverseThroughPictures(Direction.Right);
-
             if (newPictureMode == true)
             {
                 EditNextPicture();
             }
+
+            TraverseThroughPictures(Direction.Right);
         }
         private void ButtonPicLeClick(object sender, RoutedEventArgs e)
         {
@@ -222,8 +221,8 @@ namespace Digitales_Fotobuch
                     //Bild setzen
                     SetImage(0);
 
-                    //Neuen Ordner erstellen in den die Dateien kopiert werden -> auch merken
-                    currentFolder = FileHandling.CreateNewPictureFolder();
+                    //Neuen Ordner erstellen in den die Dateien kopiert werden
+                     FileHandling.CreateNewPictureFolder();
                 }
             }
             else
