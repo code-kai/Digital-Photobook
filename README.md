@@ -1,4 +1,4 @@
-# Digital Picture Book
+# Digital Photo Book
 
 A management system to store pictures and set filters to them, to easily find them if needed.
 
