@@ -1,4 +1,4 @@
-# Digital Picture Book
+# Digital Photo Book
 
 A management system to store pictures and set filters to them, to easily find them if needed.
 
@@ -26,6 +26,6 @@ What things you need to install the software and how to install them
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 
