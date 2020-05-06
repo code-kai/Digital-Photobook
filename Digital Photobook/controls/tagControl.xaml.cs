@@ -22,6 +22,10 @@ namespace Digitales_Fotobuch.controls
                         EventManager.RegisterRoutedEvent("TagDeleteEvent", RoutingStrategy.Bubble,
                         typeof(RoutedEventHandler), typeof(TagControl));
 
+        public static readonly RoutedEvent TagClickEvent =
+                        EventManager.RegisterRoutedEvent("TagClickEvent", RoutingStrategy.Bubble,
+                        typeof(RoutedEventHandler), typeof(TagControl));
+
         public TagControl(string name, bool changePossible)
         {
             //Daten muessen festgelegt sein, bevor Element initalisiert wird
@@ -33,16 +37,25 @@ namespace Digitales_Fotobuch.controls
             Loaded += ControlLoaded;
         }
 
+        /* Wenn der Filter fertig benannt wurde */
         public event RoutedEventHandler SettingConfirmed
         {
             add    { AddHandler(TextBoxSavedEvent,    value); }
             remove { RemoveHandler(TextBoxSavedEvent, value); }
         }
 
+        /* Wenn ein Tag geloescht werden soll */
         public event RoutedEventHandler TagDeleted
         {
             add    { AddHandler(TagDeleteEvent,    value); }
             remove { RemoveHandler(TagDeleteEvent, value); }
+        }
+
+        /* Wenn ein Tag angeklickt worden ist */
+        public event RoutedEventHandler TagClicked
+        {
+            add    { AddHandler(TagClickEvent,    value); }
+            remove { RemoveHandler(TagClickEvent, value); }
         }
 
 
@@ -100,6 +113,8 @@ namespace Digitales_Fotobuch.controls
                     tagData.SetActive();
                 }
             }
+
+            RaiseEvent(new RoutedEventArgs(TagClickEvent));
         }
 
         public void SetControlGreen()

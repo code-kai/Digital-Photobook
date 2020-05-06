@@ -36,12 +36,15 @@ namespace Digitales_Fotobuch
         {
             InitializeComponent();
 
-            // Register the Bubble Event Handler 
+            // Register the Bubble Event Handlers 
             AddHandler(TagControl.TextBoxSavedEvent,
                 new RoutedEventHandler(TextBoxSavedEventHandlerMethod));
 
             AddHandler(TagControl.TagDeleteEvent,
                 new RoutedEventHandler(TagDeleteEventHandlerMethod));
+
+            AddHandler(TagControl.TagClickEvent,
+                new RoutedEventHandler(TagClickEventEventHandlerMethod));
 
             Loaded += MainWindowLoaded;
         }
@@ -59,7 +62,6 @@ namespace Digitales_Fotobuch
                 }
             }
         }
-
         private void TextBoxSavedEventHandlerMethod(object sender, RoutedEventArgs e)
         {
             //Durchlaufe alle TagControls
@@ -99,6 +101,26 @@ namespace Digitales_Fotobuch
                 }
             }
         }
+
+        private void TagClickEventEventHandlerMethod(object sender, RoutedEventArgs e)
+        {
+            List<Tag> tags = TagControlHandling.GetAllActiveTags(wrapPanelTags.Children);
+
+            //Wenn es angeklickte Filter gibt
+            if (tags.Count > 0)
+            {
+                pictureList =  xmlHandling.GetAllFilteredPictures(tags);
+
+                currentPicIndex = 1;
+
+                //Label beschriften
+                SetPictureLabels();
+
+                SetImage(currentPicIndex - 1);
+
+            }
+        }
+
 
         private void MainWindowLoaded(object sender, RoutedEventArgs e)
         {
@@ -166,6 +188,10 @@ namespace Digitales_Fotobuch
                 //Funktion beenden wenn man bereits am rechten Rand ist
                 if (currentPicIndex >= pictureList.Count)
                 {
+
+                    //Editiermodus beenden
+                    DeactivateEditMode();
+
                     return false;
                 }
 
@@ -212,63 +238,73 @@ namespace Digitales_Fotobuch
         {
             if (newPictureMode == false)
             {
-                //Erstelle einen FileDialog
-                OpenFileDialog fileDialog = new OpenFileDialog
-                {
-                    Multiselect = true,
-                    Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg;*.jpg;*.JPG;*.JPEG;*.PNG",
-                    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-                };
-
-                //Oeffnen den Dialog und warte bis alle bilder ausgelesen sind
-                if (fileDialog.ShowDialog() == true)
-                {
-                    //Modus -> es werden Bilder neu zugewiesen
-                    newPictureMode = true;
-
-                    //Liste hat nun alle neuen Dateien eingelesen
-                    pictureList = fileDialog.FileNames.ToList();
-
-                    //Variablen zuruecksetzen
-                    currentPicIndex = 1;
-
-                    //Label beschriften
-                    SetPictureLabels();
-
-                    //Bild des Einlesen aendern
-                    SetButtonReadPicsImage("x");
-
-                    //Bild setzen
-                    SetImage(0);
-
-                    //Neuen Ordner erstellen in den die Dateien kopiert werden
-                     FileHandling.CreateNewPictureFolder();
-                }
+                ActivateEditMode();
             }
             else
             {
-                //Bild des Einlesen aendern
-                SetButtonReadPicsImage("camera");
+                DeactivateEditMode();
+            }
+        }
 
-                //Modus -> es werden Bilder gefiltert
-                newPictureMode = false;
+        private void ActivateEditMode()
+        {
+            //Erstelle einen FileDialog
+            OpenFileDialog fileDialog = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "Image files (*.png;*.jpeg)|*.png;*.jpeg;*.jpg;*.JPG;*.JPEG;*.PNG",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
 
-                wrapPanelTags = TagControlHandling.ResetActiveFilter(wrapPanelTags);
+            //Oeffnen den Dialog und warte bis alle bilder ausgelesen sind
+            if (fileDialog.ShowDialog() == true)
+            {
+                //Modus -> es werden Bilder neu zugewiesen
+                newPictureMode = true;
 
-                //Liste löschen
-                pictureList.Clear();
+                //Liste hat nun alle neuen Dateien eingelesen
+                pictureList = fileDialog.FileNames.ToList();
 
-                currentPicIndex = 0;
+                //Variablen zuruecksetzen
+                currentPicIndex = 1;
 
                 //Label beschriften
                 SetPictureLabels();
 
-                //Bild aus Control loeschen
-                imageCurrentPic.Source = new BitmapImage();
+                //Bild des Einlesen aendern
+                SetButtonReadPicsImage("x");
 
-                //Maximale Anzahl an Bildern setzen
-                labelPicMax.Content = FileHandling.GetFileCount().ToString();
+                //Bild setzen
+                SetImage(0);
+
+                //Neuen Ordner erstellen in den die Dateien kopiert werden
+                FileHandling.CreateNewPictureFolder();
             }
+        }
+
+        private void DeactivateEditMode()
+        {
+            //Bild des Einlesen aendern
+            SetButtonReadPicsImage("camera");
+
+            //Modus -> es werden Bilder gefiltert
+            newPictureMode = false;
+
+            wrapPanelTags = TagControlHandling.ResetActiveFilter(wrapPanelTags);
+
+            //Liste löschen
+            pictureList.Clear();
+
+            currentPicIndex = 0;
+
+            //Label beschriften
+            SetPictureLabels();
+
+            //Bild aus Control loeschen
+            imageCurrentPic.Source = new BitmapImage();
+
+            //Maximale Anzahl an Bildern setzen
+            labelPicMax.Content = FileHandling.GetFileCount().ToString();
         }
 
         private void SetPictureLabels()

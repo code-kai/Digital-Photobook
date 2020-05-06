@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 namespace Digitales_Fotobuch.code
 {
@@ -136,6 +137,32 @@ namespace Digitales_Fotobuch.code
             docPicturesTags.Save(GetXmlFilePath("PicturesTags"));
         }
 
+        public List<string> GetAllFilteredPictures(List<Tag> neededTags)
+        {
+            List<string> paths = new List<string>();
+
+            //Alle Pfade durchlaufen
+            foreach(XElement path in docPicturesTags.Root.Elements("Picture"))
+            {
+                bool pictureOk = false;
+
+                //Alle noetigen Tags durchlaufen
+                foreach (Tag tag in neededTags)
+                {
+                    IEnumerable<XElement> xElements =  path.Elements("Tag").Where(x => x.Attribute("name").Value == tag.GetName());
+
+                    pictureOk = xElements.Count() > 0;
+                }
+
+                //Wenn Tag gefunden dann pfad hinzufuegen
+                if(pictureOk == true)
+                {
+                    paths.Add(path.Attribute("path").Value);
+                }
+            }
+
+            return paths;
+        }
         #endregion
 
         #endregion
