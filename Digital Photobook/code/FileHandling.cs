@@ -47,7 +47,16 @@ namespace Digital_Photobook.code
 
         static public int GetFileCount()
         {
-            return Directory.EnumerateFiles(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Digital Photobook"), "*.jpg", SearchOption.AllDirectories).Count();
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Digital Photobook");
+
+            if (Directory.Exists(path) == true)
+            {
+                return Directory.EnumerateFiles(path, "*.jpg", SearchOption.AllDirectories).Count();
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
