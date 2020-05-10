@@ -94,7 +94,7 @@ namespace Digitales_Fotobuch.controls
         private void TagConGridPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //Wenn der Modus Filtern ist
-            if (tagConTextBox.IsEnabled == false)
+            if (tagConTextBox.IsEnabled == false && tagConButton.IsMouseOver != true)
             {
                 if (tagData.IsActive() == true)
                 {

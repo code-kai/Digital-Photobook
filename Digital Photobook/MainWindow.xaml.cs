@@ -59,6 +59,7 @@ namespace Digitales_Fotobuch
                 {
                     //Weise dem Tag einen neuen Namen zu 
                     xmlHandling.DeleteTag(item.GetCurrentTagInfo().GetName());
+                    break;
                 }
             }
         }
@@ -104,20 +105,22 @@ namespace Digitales_Fotobuch
 
         private void TagClickEventEventHandlerMethod(object sender, RoutedEventArgs e)
         {
-            List<Tag> tags = TagControlHandling.GetAllActiveTags(wrapPanelTags.Children);
-
-            //Wenn es angeklickte Filter gibt
-            if (tags.Count > 0)
+            if (newPictureMode == false)
             {
-                pictureList =  xmlHandling.GetAllFilteredPictures(tags);
+                List<Tag> tags = TagControlHandling.GetAllActiveTags(wrapPanelTags.Children);
 
-                currentPicIndex = 1;
+                //Wenn es angeklickte Filter gibt
+                if (tags.Count > 0)
+                {
+                    pictureList = xmlHandling.GetAllFilteredPictures(tags);
 
-                //Label beschriften
-                SetPictureLabels();
+                    currentPicIndex = 1;
 
-                SetImage(currentPicIndex - 1);
+                    //Label beschriften
+                    SetPictureLabels();
 
+                    SetImage(currentPicIndex - 1);
+                }
             }
         }
 
@@ -312,8 +315,12 @@ namespace Digitales_Fotobuch
             //Anzahl Bilder als Max setzen
             labelPicMax.Content = pictureList.Count.ToString();
 
+            progressBarLoadPic.Maximum = pictureList.Count;
+
             //Aktueller Bilderindex setzen
             labelPicCounter.Content = currentPicIndex.ToString();
+
+            progressBarLoadPic.Value = currentPicIndex;
         }
 
         private void SetButtonReadPicsImage(string resourceName)

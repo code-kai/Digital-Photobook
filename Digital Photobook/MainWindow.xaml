@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Digitales_Fotobuch"
         xmlns:controls="clr-namespace:Digitales_Fotobuch.controls" x:Name="MainWindow1" x:Class="Digitales_Fotobuch.MainWindow"
         mc:Ignorable="d"
-        Title="Digitales Fotobuch" Height="900" Width="1600" FontSize="18" ResizeMode="CanResizeWithGrip">
+        Title="Digitales Fotobuch" Height="900" Width="1600" FontSize="18" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="520"/>
@@ -69,13 +69,13 @@
                 </Grid.RowDefinitions>
 
                 <WrapPanel Grid.Row="0" x:Name="wrapPanelPicCounter">
-                    <Label x:Name="labelPicture" Content="Picture" FontSize="14"/>
+                    <Label x:Name="labelPicture" Content="Bild" FontSize="14"/>
                     <Label x:Name="labelPicCounter" Content="0" FontSize="14" FontWeight="Bold"/>
-                    <Label x:Name="labelPicFrom" Content="from" FontSize="14"/>
+                    <Label x:Name="labelPicFrom" Content="von" FontSize="14"/>
                     <Label x:Name="labelPicMax" Content="0" FontSize="14" FontWeight="Bold"/>
                 </WrapPanel>
 
-                <ProgressBar x:Name="PrograssBarLoadPic" Grid.Row="1" Width="320" HorizontalAlignment="Left"/>
+                <ProgressBar x:Name="progressBarLoadPic" Minimum="1" Grid.Row="1" Width="320" HorizontalAlignment="Left"/>
 
                 <ToolBarTray Grid.Row="3" x:Name="mainMenu" Cursor="Hand">
                     <ToolBar>
