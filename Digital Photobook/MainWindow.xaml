@@ -15,25 +15,36 @@
 
         <GroupBox Header="Aktuelles Foto" Grid.Column="0">
 
-            <Grid Width="500" >
+            <Grid Width="500">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="35"/>
                     <ColumnDefinition Width="430"/>
                     <ColumnDefinition Width="35"/>
                 </Grid.ColumnDefinitions>
-
                 <Button Grid.Column="0" x:Name="buttonPicLe" BorderThickness="0,0,0,0" Width="35" Click="ButtonPicLeClick" Cursor="Hand">
                     <Button.Background>
                         <ImageBrush ImageSource="/resources/angle-left.jpg" Stretch="Uniform"/>
                     </Button.Background>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Zurück</TextBlock>
+                            <TextBlock> Gehe ein Bild zurück.</TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
                 </Button>
 
-                <Image Grid.Column="1" x:Name="imageCurrentPic" PreviewMouseLeftButtonDown="ImageCurrentPicPreviewMouseLeftButtonDown" />
+                <Image Grid.Column="1" x:Name="imageCurrentPic" PreviewMouseLeftButtonDown="ImageCurrentPicPreviewMouseLeftButtonDown"/>
 
                 <Button Grid.Column="2" x:Name="buttonPicRi" BorderThickness="0,0,0,0" Click="ButtonPicRiClick" Cursor="Hand">
                     <Button.Background>
                         <ImageBrush ImageSource="/resources/angle-right.jpg" Stretch="Uniform"/>
                     </Button.Background>
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Weiter</TextBlock>
+                            <TextBlock> Gehe ein Bild vor. </TextBlock>
+                        </StackPanel>
+                    </Button.ToolTip>
                 </Button>
 
             </Grid>
@@ -52,12 +63,18 @@
 
             </GroupBox>
 
-            <Button x:Name="buttonAddTag" Foreground="DarkGray" Content="+" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="40" Height="40" Margin="0,0,7,234" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" FontWeight="Bold" FontFamily="Comic Sans MS"  Click="ButtonAddTagClick" Grid.RowSpan="2" FontSize="20">
+            <Button x:Name="buttonAddTag" Foreground="DarkGray" Content="+" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="40" Height="40" Margin="0,0,7,234" BorderBrush="{x:Null}" BorderThickness="0,0,0,0" FontWeight="Bold" FontFamily="Comic Sans MS"  Click="ButtonAddTagClick" Grid.RowSpan="2" FontSize="20" Cursor="Hand">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="50"/>
                     </Style>
                 </Button.Resources>
+                <Button.ToolTip>
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Filter hinzufügen</TextBlock>
+                        <TextBlock>Hier klicken um einen Filter hinzufügen</TextBlock>
+                    </StackPanel>
+                </Button.ToolTip>
             </Button>
 
             <Grid Grid.Row="1" Margin="10, 0, 0, 0">
@@ -99,12 +116,28 @@
                             <Button.Background>
                                 <ImageBrush ImageSource="/resources/flag_gb.png" Stretch="UniformToFill" />
                             </Button.Background>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">English</TextBlock>
+                                    <TextBlock>
+                                            Switch language to English.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button.ToolTip>
                         </Button>
                         <Separator Margin="10,0,10,0"/>
                         <Button x:Name="buttonDe" Height="22" Width="34">
                             <Button.Background>
                                 <ImageBrush ImageSource="/resources/flag_ger.png" Stretch="UniformToFill" />
                             </Button.Background>
+                            <Button.ToolTip>
+                                <StackPanel>
+                                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Deutsch</TextBlock>
+                                    <TextBlock>
+                                           Wechsle die Sprache zu Deutsch.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Button.ToolTip>
                         </Button>
                     </ToolBar>
                 </ToolBarTray>

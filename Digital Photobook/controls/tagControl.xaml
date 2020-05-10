@@ -6,6 +6,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" KeyDown="UserControlKeyDown">
     <Grid x:Name="tagConGrid" Cursor="Hand" PreviewMouseLeftButtonUp="TagConGridPreviewMouseLeftButtonUp" Height="50" Width="120" Margin="10,5,0,0">
+        <Grid.ToolTip>
+            <StackPanel>
+                <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">
+                    Filter
+                </TextBlock>
+                <TextBlock>
+                    Klicke hier um die Bilder zu Filtern
+                </TextBlock>
+            </StackPanel>
+        </Grid.ToolTip>
         <Ellipse x:Name="tagConEllipse" Fill="DarkGray" Width="120"/>
         <TextBox x:Name="tagConTextBox" HorizontalAlignment="Left" Margin="15,0,0,0" TextWrapping="NoWrap" VerticalAlignment="Center" Width="Auto" BorderThickness="0,0,0,0" Background="DarkGray" FontWeight="Bold" FontSize="14" TextChanged="TagConTextBoxTextChanged" LostFocus="TagConTextBoxLostFocus"/>
         <Button x:Name="tagConButton" Foreground="DarkGray" Content="X" HorizontalAlignment="Right" VerticalAlignment="Center" Background="LightGray" Height="25" Width="35" FontSize="22" FontWeight="Bold" FontFamily="Arial Rounded MT Bold" FontStyle="Normal" BorderBrush="{x:Null}" Focusable="False" Click="TagConButtonClick">
@@ -14,7 +24,16 @@
                     <Setter Property="CornerRadius" Value="15"/>
                 </Style>
             </Button.Resources>
-
+            <Button.ToolTip>
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">
+                        Filter
+                    </TextBlock>
+                    <TextBlock>
+                        Klicke hier um den Filter zu entfernen.
+                    </TextBlock>
+                </StackPanel>
+            </Button.ToolTip>
         </Button>
     </Grid>
 
