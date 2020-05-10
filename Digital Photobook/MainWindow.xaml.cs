@@ -116,10 +116,14 @@ namespace Digitales_Fotobuch
 
                     currentPicIndex = 1;
 
-                    //Label beschriften
-                    SetPictureLabels();
+                    //Es muessen Bilder gefunden werden
+                    if (pictureList.Count > 0)
+                    {
+                        //Label beschriften
+                        SetPictureLabels();
 
-                    SetImage(currentPicIndex - 1);
+                        SetImage(currentPicIndex - 1);
+                    }
                 }
             }
         }
